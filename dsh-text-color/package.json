@@ -1,0 +1,34 @@
+{
+    "name":  "dsh-text-color",
+    "version":  "0.1.0",
+    "private":  true,
+    "description":  "Recolor DSH web UI text tokens from the General settings page — per-slot, light/dark aware, text only.",
+    "type":  "module",
+    "main":  "lib/index.js",
+    "exports":  {
+                    ".":  "./lib/index.js",
+                    "./client":  "./lib/client.js",
+                    "./package.json":  "./package.json"
+                },
+    "files":  [
+                  "lib/**",
+                  "cordis.patch.yml"
+              ],
+    "dsh":  {
+                "bundle":  {
+                               "patch":  "./cordis.patch.yml"
+                           },
+                "client":  {
+                               "inject":  [
+                                              "@deepseek-ai/dsh-client-ui-theme"
+                                          ],
+                               "platform":  "web"
+                           }
+            },
+    "license":  "MIT",
+    "author":  "xiaoz",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/xiaozdesiyoucangku/dsh-plugins.git"
+                   }
+}

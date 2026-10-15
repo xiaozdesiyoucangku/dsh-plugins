@@ -1,0 +1,76 @@
+# ============================================================================
+# dsh-image-gen —— DSH bundle patch
+# ============================================================================
+# 插件的「挂载声明」。DSH 启动时按 bundle 层栈叠加各插件 patch，
+# 本文件把生图插件插入 profile 的配置树。
+#
+# 安装：
+#   dsh plugin --profile desktop add link:<本目录绝对路径>
+# 或手工：package.json 的 dependencies 加 "dsh-image-gen": "link:./plugins/dsh-image-gen"，
+#         dsh.profile.bundles 数组加 "dsh-image-gen"，再 pnpm install。
+#
+# 下面 config 段是默认值（与 index.js 的 Config schema 一致）。
+# 留空/删掉则用插件内置默认值。
+#
+# ⚠️ 想改配置，请改 **profile 根目录** 的 cordis.patch.yml（那个是覆盖层，
+#    改完 HMR 自动重载，不用重启），而不是改本文件（本文件属于插件包，
+#    改动会被下次安装覆盖）。
+# ============================================================================
+
+- insert:
+    - id: dsh-image-gen
+      name: dsh-image-gen
+      config:
+        # 当前厂商 id。内置模板：siliconflow
+        provider: siliconflow
+        # 默认模型；留空 = 用该厂商模板的 defaultModel
+        model: ''
+        # ── 厂商模板 ──
+        # 新增厂商只需在这里加一段，不用改代码。
+        # 各家差异只在四处：endpoint / auth / fields（字段名）/ response（取值路径）。
+        #
+        # providers:
+        #   my-vendor:
+        #     displayName: 我的厂商
+        #     endpoint: https://api.example.com/v1/images/generations
+        #     credential: MY_VENDOR_API_KEY      # $DSH_HOME/.credentials.yaml 里的键名
+        #     auth: bearer                       # bearer | header:<名> | query:<名> | none
+        #     defaultModel: some/model-id
+        #     editModel: some/edit-model-id
+        #     fields:                            # 逻辑字段 → 该厂商的请求体字段名
+        #       prompt: prompt
+        #       model: model
+        #       size: image_size                 # 有的厂商叫 size
+        #       seed: seed
+        #       negativePrompt: negative_prompt  # 留空字符串 = 不发送该字段
+        #       batchSize: batch_size
+        #       image: image
+        #     response:                          # 从响应体取值的路径（点号分隔，支持 [0]）
+        #       images: images                   # 图片数组
+        #       url: url                         # 数组元素里取 URL 的字段
+        #       seed: seed
+        #     retryableCodes: [50604, 50505]     # 该厂商表示「可重试」的业务错误码
+        #     # ── 模型列表与探测（可选）──
+        #     # 不配 models 时，默认从 endpoint 推导 /v1/models
+        #     models:
+        #       endpoint: https://api.example.com/v1/models
+        #       path: data                       # 模型数组所在字段
+        #       id: id                           # 数组元素里取 id 的字段
+        #     modelHints: [image, flux]          # 关键词预筛词表
+        #     probeCodes:                        # 探测判定码（各厂商不同，需实测）
+        #       supported: [20015]               # 模型存在且是生图模型
+        #       unsupported: [30000]             # 不是生图模型
+        #       missing: [20012]                 # 模型不存在
+        providers: {}
+        # ── 通用 ──
+        # 留空 = <profile>/generated-images
+        outputDir: ''
+        imageSize: 1024x1024
+        maxSide: 2048
+        timeoutMs: 180000
+        downloadTimeoutMs: 60000
+        maxRetries: 3
+        retryBaseMs: 20000
+        batchSize: 1
+        negativePrompt: ''
+        maxImageBytes: 20971520

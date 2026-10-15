@@ -1,0 +1,48 @@
+{
+    "name":  "dsh-image-gen",
+    "version":  "0.1.0",
+    "description":  "DSH 生图插件：注册 generate_image 工具出图并保存到本地，图片在对话界面直接显示；带设置界面",
+    "keywords":  [
+                     "dsh",
+                     "dsh-plugin",
+                     "deepseek-harness",
+                     "image-generation",
+                     "siliconflow"
+                 ],
+    "type":  "module",
+    "main":  "index.js",
+    "exports":  {
+                    ".":  "./index.js",
+                    "./client":  "./lib/client.js",
+                    "./package.json":  "./package.json"
+                },
+    "files":  [
+                  "index.js",
+                  "lib",
+                  "cordis.patch.yml",
+                  "README.md"
+              ],
+    "scripts":  {
+                    "build:client":  "node scripts/build-client.mjs"
+                },
+    "dsh":  {
+                "bundle":  {
+                               "patch":  "./cordis.patch.yml"
+                           },
+                "client":  {
+                               "platform":  "web"
+                           }
+            },
+    "peerDependencies":  {
+                             "@deepseek-ai/schemastery":  "\u003e=3.18.1"
+                         },
+    "devDependencies":  {
+                            "esbuild":  "^0.25.0"
+                        },
+    "license":  "MIT",
+    "author":  "xiaoz",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/xiaozdesiyoucangku/dsh-plugins.git"
+                   }
+}
